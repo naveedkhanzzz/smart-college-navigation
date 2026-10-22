@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart College Navigation | Kishkinda University</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header" id="home">
+    <div class="brand">
+        <img
+            src="{{ url_for('static', filename='kishkinda_logo.webp') }}"
+            alt="Kishkinda University Logo">
+
+        <div>
+            <h1>Smart College Navigation</h1>
+            <p>Kishkinda University | Explore Your Campus</p>
+        </div>
+    </div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#floors">Maps</a>
+        <a href="#facilities">Facilities</a>
+        <a href="#assistant">Help</a>
+    </nav>
+</header>
+
+
+<main>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-content">
+
+        <span class="badge">YOUR CAMPUS, SIMPLIFIED</span>
+
+        <h2>
+            Smart College<br>
+            <span>Navigation</span>
+        </h2>
+
+        <p>
+            Find classrooms, laboratories, faculty cabins and campus
+            facilities — all in one place.
+        </p>
+
+        <div class="search-area">
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Search room, faculty or facility..."
+                aria-label="Search campus destinations">
+
+            <button type="button" onclick="searchPlace()">
+                Search
+            </button>
+
+            <button
+                type="button"
+                class="voice-btn"
+                onclick="voiceSearch()"
+                aria-label="Voice search">
+                🎤
+            </button>
+        </div>
+
+        <p id="result" aria-live="polite"></p>
+
+    </div>
+</section>
+
+
+<!-- FLOOR MAP SECTION -->
+<section class="section" id="floors">
+
+    <h2>Select Your Floor</h2>
+    <p>Choose a floor to explore the building.</p>
+
+    <div class="floor-grid">
+        <button type="button" onclick="selectFloor(0)">
+            🏢<br>Ground Floor
+        </button>
+
+        <button type="button" onclick="selectFloor(1)">
+            🏢<br>First Floor
+        </button>
+
+        <button type="button" onclick="selectFloor(2)">
+            🏢<br>Second Floor
+        </button>
+
+        <button type="button" onclick="selectFloor(3)">
+            🏢<br>Third Floor
+        </button>
+
+        <button type="button" onclick="selectFloor(4)">
+            🏢<br>Fourth Floor
+        </button>
+    </div>
+
+
+    <!-- MAP CARD -->
+    <div class="map-card">
+
+        <h3 id="floorTitle">Ground Floor</h3>
+
+        <p id="mapDescription">
+            Select a room or search for a destination.
+        </p>
+
+
+        <!-- STARTING POINT -->
+        <div class="route-info">
+            <label for="startPoint">Starting Point:</label>
+
+            <select id="startPoint">
+                <option value="Main Entrance">Main Entrance</option>
+                <option value="Main Stairs">Main Stairs</option>
+                <option value="Left Wing Lift">Left Wing Lift</option>
+                <option value="Central Left Lift">Central Left Lift</option>
+                <option value="Central Right Lift">Central Right Lift</option>
+                <option value="Right Wing Lift">Right Wing Lift</option>
+            </select>
+        </div>
+
+
+        <!-- SCHEMATIC COLLEGE MAP -->
+        <div class="w-map">
+
+            <!-- LEFT WING -->
+            <div class="wing wing-left">
+
+                <h4>🟦 LEFT WING</h4>
+                <div class="corridor-label">LEFT CORRIDOR</div>
+
+                <button type="button" class="room"
+                        onclick="selectDestination('Classroom C101', 0)">
+                    📚 Classroom C101
+                </button>
+
+                <button type="button" class="room"
+                        onclick="selectDestination('Electronics Laboratory', 1)">
+                    🧪 Electronics Laboratory
+                </button>
+
+                <button type="button" class="room"
+                        onclick="selectDestination('Left Wing Lift', 0)">
+                    🛗 Left Wing Lift
+                </button>
+
+            </div>
+
+
+            <!-- CENTRAL WING -->
+            <div class="wing wing-middle">
+
+                <h4>🟩 CENTRAL WING</h4>
+                <div class="corridor-label">CENTRAL CORRIDOR</div>
+
+                <button type="button" class="room"
+                        onclick="selectDestination('Faculty Cabin', 2)">
+                    👨‍🏫 Faculty Cabin
+                </button>
+
+                <div class="stairs">🪜 MAIN STAIRS</div>
+
+                <button type="button" class="room lift"
+                        onclick="selectDestination('Central Left Lift', 0)">
+                    🛗 Central Left Lift
+                </button>
+
+                <button type="button" class="room lift"
+                        onclick="selectDestination('Central Right Lift', 0)">
+                    🛗 Central Right Lift
+                </button>
+
+                <div class="entrance">🚪 MAIN ENTRANCE</div>
+
+            </div>
+
+
+            <!-- RIGHT WING -->
+            <div class="wing wing-right">
+
+                <h4>🟪 RIGHT WING</h4>
+                <div class="corridor-label">RIGHT CORRIDOR</div>
+
+                <button type="button" class="room"
+                        onclick="selectDestination('Library', 3)">
+                    📖 Library
+                </button>
+
+                <button type="button" class="room"
+                        onclick="selectDestination('Department Office', 2)">
+                    🏛️ Department Office
+                </button>
+
+                <button type="button" class="room"
+                        onclick="selectDestination('Right Wing Lift', 0)">
+                    🛗 Right Wing Lift
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ROUTE PREVIEW -->
+        <div
+            id="routePath"
+            class="route-path"
+            aria-live="polite">
+            📍 Select a destination to preview your route.
+        </div>
+
+        <p id="routeResult" aria-live="polite">
+            📍 Select a room to preview navigation.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- CAMPUS FACILITIES -->
+<section class="section" id="facilities">
+
+    <h2>Campus Facilities</h2>
+    <p>Find important places around your campus.</p>
+
+    <div class="facility-grid">
+
+        <button type="button"
+                onclick="searchCategory('Classroom')">
+            📚<br>Classrooms
+        </button>
+
+        <button type="button"
+                onclick="searchCategory('Laboratory')">
+            🧪<br>Laboratories
+        </button>
+
+        <button type="button"
+                onclick="searchCategory('Faculty Cabin')">
+            👨‍🏫<br>Faculty Cabins
+        </button>
+
+        <button type="button"
+                onclick="searchCategory('Stairs')">
+            🪜<br>Stairs
+        </button>
+
+        <button type="button"
+                onclick="searchCategory('Lift')">
+            🛗<br>Lifts
+        </button>
+
+        <button type="button"
+                onclick="searchCategory('Admission Counter')">
+            📝<br>Admission Counter
+        </button>
+
+        <button type="button"
+                onclick="searchCategory('Auditorium')">
+            🎭<br>Auditorium
+        </button>
+
+        <button type="button"
+                onclick="searchCategory('Washroom')">
+            🚻<br>Washrooms
+        </button>
+
+        <button type="button"
+                onclick="searchCategory('Department')">
+            🏛️<br>Departments
+        </button>
+
+        <button type="button"
+                onclick="searchCategory('Library')">
+            📖<br>Library
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- CAMPUS ASSISTANT -->
+<section class="section assistant" id="assistant">
+
+    <h2>🤖 Campus Assistant</h2>
+
+    <p>
+        Need help finding a facility? Ask about a college destination.
+    </p>
+
+    <div class="search-area">
+
+        <input
+            id="chatInput"
+            type="text"
+            placeholder="Ask about a college facility..."
+            aria-label="Ask the campus assistant">
+
+        <button type="button" onclick="askAssistant()">
+            Ask
+        </button>
+
+    </div>
+
+    <p id="chatAnswer" aria-live="polite"></p>
+
+</section>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer>
+    <p>Smart College Navigation | Kishkinda University</p>
+    <p>Explore · Navigate · Achieve</p>
+</footer>
+
+
+<!-- JAVASCRIPT -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
